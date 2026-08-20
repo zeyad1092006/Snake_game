@@ -30,6 +30,7 @@ class Game:
             if self.did_eat():
                 self.score += 1
                 self.food = Food(self.block_size, self.width, self.height, self.snake.snake_body)
+                self.speed += 2
             else:
                 self.snake.remove_tail()
 
