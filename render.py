@@ -7,9 +7,9 @@ import pygame
 import config
 from snake import *
 from food import *
-class render:
-    def __init__(self):
-        self.screen = pygame.display.set_mode((config.WIDTH , config.HEIGHT))
+class Render:
+    def __init__(self,screen):
+        self.screen = screen
         self.green = config.COLORES['green']
         self.red = config.COLORES['red']
         self.white = config.COLORES['white']
