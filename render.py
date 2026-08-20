@@ -13,16 +13,19 @@ class Render:
         self.green = config.COLORES['green']
         self.red = config.COLORES['red']
         self.white = config.COLORES['white']
-        self.background = config.COLORES['navy']
+        self.black = config.COLORES['black']
+        self.background = pygame.image.load("assets/snake_bg.png").convert()
+        self.background = pygame.transform.scale(self.background, self.screen.get_size())
+        
         self.font = pygame.font.Font(None, 24)
         self.block_size = config.BLOCK_SIZE
         
     def draw_background(self):
-        self.screen.fill(self.background)
-
+        self.screen.blit(self.background, (0,0))
+        
     def draw_snake(self, snake:"Snake"):
         for x , y in snake.snake_body:
-            pygame.draw.rect(self.screen, self.green,
+            pygame.draw.rect(self.screen, self.black,
                 [x , y ,self.block_size, self.block_size] )
 
     def draw_food(self, food:"Food"):
