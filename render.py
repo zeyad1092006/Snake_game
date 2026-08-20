@@ -36,9 +36,18 @@ class Render:
         self.screen.blit(text, (10,10))
 
     def draw_game_over(self):
-        text = self.font.render(f"Game Over", True, self.red)
-        center_x = self.screen.get_width() // 2 - text.get_width() // 2
-        center_y = self.screen.get_height() // 2 - text.get_height() // 2
-        self.screen.blit(text, (center_x, center_y) )
+        game_over_text = self.font.render(f"Game Over", True, self.red)
+        restart_text = self.font.render(f"Press R to Restart", True, self.white)
+        exit_text = self.font.render(f"Press ESC to Exit", True, self.white)
+        center_x = self.screen.get_width() // 2 - game_over_text.get_width() // 2
+        game_over_x = center_x - game_over_text.get_width() // 2
+        restart_x = center_x - restart_text.get_width() // 2
+        exit_x = center_x - exit_text.get_width() //2
+
+        center_y = self.screen.get_height() // 2 - game_over_text.get_height() // 2
+
+        self.screen.blit(game_over_text, (game_over_x, center_y - 50) )
+        self.screen.blit(restart_text, (restart_x, center_y) )
+        self.screen.blit(exit_text, (exit_x, center_y + 30) )
 
         

@@ -21,32 +21,38 @@ class Game:
         self.render = Render(self.screen)
 
         self.running = True
+        self.game_over = False
 
     def run(self):
         while self.running:
             self.handle_events()
             self.render.draw_background()
-            self.snake.move()
-            if self.did_eat():
-                self.score += 1
-                self.food = Food(self.block_size, self.width, self.height, self.snake.snake_body)
-                self.speed += 2
-            else:
-                self.snake.remove_tail()
 
-            if self.did_collide():
-                self.running = False
+            if not self.game_over:
+                self.snake.move()
+
+                if self.did_eat():
+                    self.score += 1
+                    self.food = Food(self.block_size, self.width, self.height, self.snake.snake_body)
+                    self.speed += 1
+                else:
+                    self.snake.remove_tail()
+
+                if self.did_collide():
+                    self.game_over = True
 
             self.render.draw_snake(self.snake)
             self.render.draw_food(self.food)
             self.render.draw_score(self.score)
 
-            if not self.running:
+            if self.game_over:
                 self.render.draw_game_over()
                 pygame.display.flip()
-                pygame.time.wait(2000)
-            else:
-                pygame.display.flip()
+                # pygame.time.wait(2000)
+                
+            pygame.display.flip()
+            if not self.game_over:
+                # pygame.display.flip()
                 self.clock.tick(self.speed)
                 
         pygame.quit()     
@@ -78,7 +84,13 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
-                self.handle_key_press(event.key)
+                if self.game_over:
+                    if event.key  == pygame.K_r:
+                        self.restart_game()
+                    elif event.key == pygame.K_ESCAPE:
+                        self.running = False
+                else:
+                    self.handle_key_press(event.key)
 
 
     def handle_key_press(self, key):
@@ -93,4 +105,11 @@ class Game:
         
         if key == pygame.K_LEFT and self.snake.diretion != 'right':
             self.snake.diretion = "left"
-        
+
+
+    def restart_game(self):
+        self.snake = Snake(self.block_size  , self.width //2 , self.height// 2)
+        self.food = Food(self.block_size , self.width , self.height , self.snake.snake_body)
+        self.score = config.SCORE
+        self.speed = config.GAME_SPEED
+        self.game_over = False
